@@ -6,6 +6,10 @@ Ordinary roles default to Sol 6.1 through Codex. The hardest tasks use Opus 5.5 
 
 Setup can save an all-Sol configuration, but that configuration cannot satisfy upstream steps requiring a different model or model family, such as the final audit in `show-me-your-work` and the eval playbook. See the [plugin manifest](plugin/plugin.json) for the current version and the [compatibility notes](docs/spec.md) for verified workflows and limitations.
 
+![pstack for Codex workflow: route a task through a playbook and situational skills, prove the result, and return the appropriate outcome.](docs/assets/pstack-for-codex-workflow.png)
+
+The playbook determines which skills and agents to use; the result can be an answer, a change, or a PR. See [Design and compatibility](docs/spec.md) for execution details, or open the [editable workflow map](docs/assets/pstack-for-codex-workflow.svg).
+
 ## Requirements
 
 - Codex with plugin and native subagent support, signed in to an account with access to your selected models.
