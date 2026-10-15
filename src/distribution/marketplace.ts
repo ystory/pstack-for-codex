@@ -1,0 +1,95 @@
+import {
+  lstat,
+  mkdir,
+  mkdtemp,
+  realpath,
+  rename,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
+import path from 'node:path';
+import { localMarketplace, verifyPluginArtifact } from './artifact.ts';
+import type { PluginArtifact } from './artifact.ts';
+
+export interface MarketplaceSelection {
+  artifact: PluginArtifact;
+  artifactRoot: string;
+  marketplaceRoot: string;
+}
+
+export async function promotePluginArtifact(
+  artifactRoot: string,
+  marketplaceRoot: string,
+): Promise<MarketplaceSelection> {
+  if (!path.isAbsolute(artifactRoot) || !path.isAbsolute(marketplaceRoot))
+    throw new Error('Artifact and marketplace must be absolute paths.');
+  for (const directory of [artifactRoot, marketplaceRoot]) {
+    const stat = await lstat(path.resolve(directory));
+    if (stat.isSymbolicLink() || !stat.isDirectory())
+      throw new Error(
+        `Artifact and marketplace must be physical directories, not symlinks: ${directory}`,
+      );
+  }
+  const sourceRoot = await realpath(artifactRoot);
+  const targetRoot = await realpath(marketplaceRoot);
+  try {
+    await lstat(path.join(targetRoot, 'artifact.json'));
+    throw new Error(
+      'An artifact directory cannot be used as a marketplace root.',
+    );
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+  }
+  const relative = path.relative(targetRoot, sourceRoot);
+  if (
+    !relative ||
+    path.isAbsolute(relative) ||
+    relative.split(path.sep).includes('..')
+  )
+    throw new Error(
+      'Artifact must be an immutable child of the marketplace root.',
+    );
+  if (relative.split(path.sep)[0] === '.agents')
+    throw new Error(
+      'The marketplace native metadata directory is reserved and cannot contain artifacts.',
+    );
+  const artifact = await verifyPluginArtifact(sourceRoot);
+  const manifest = {
+    ...localMarketplace,
+    plugins: [
+      {
+        name: artifact.name,
+        source: {
+          source: 'local',
+          path: `./${relative.split(path.sep).join('/')}/plugin`,
+        },
+      },
+    ],
+  };
+  let directory = targetRoot;
+  for (const component of ['.agents', 'plugins']) {
+    directory = path.join(directory, component);
+    try {
+      await mkdir(directory);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error;
+    }
+    const stat = await lstat(directory);
+    if (stat.isSymbolicLink() || !stat.isDirectory())
+      throw new Error(
+        `Marketplace metadata must use physical directories, not symlinks: ${directory}`,
+      );
+  }
+  const temporary = await mkdtemp(path.join(directory, '.promote-'));
+  try {
+    const next = path.join(temporary, 'marketplace.json');
+    await writeFile(next, `${JSON.stringify(manifest, null, 2)}\n`, {
+      flag: 'wx',
+      mode: 0o644,
+    });
+    await rename(next, path.join(directory, 'marketplace.json'));
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+  return { artifact, artifactRoot: sourceRoot, marketplaceRoot: targetRoot };
+}

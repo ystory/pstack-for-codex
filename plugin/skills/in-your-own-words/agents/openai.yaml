@@ -1,0 +1,5 @@
+interface:
+  display_name: "in-your-own-words"
+  short_description: "Restate in your own words what you think the user's goals are and what problem they're trying to solve. Use for /in-your-own-words."
+policy:
+  allow_implicit_invocation: false

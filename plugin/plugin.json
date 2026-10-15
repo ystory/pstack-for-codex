@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pstack-for-codex",
+  "version": "0.1.0-dev.0",
+  "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
+  "author": {
+    "name": "Lauren Tan"
+  },
+  "homepage": "https://github.com/ystory/pstack-for-codex",
+  "repository": "https://github.com/ystory/pstack-for-codex",
+  "license": "MIT",
+  "keywords": [
+    "pstack",
+    "poteto-mode",
+    "workflow",
+    "principles",
+    "agent-style",
+    "subagents",
+    "unslop"
+  ],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/setup-pstack/SKILL.md"
+    }
+  }
+}

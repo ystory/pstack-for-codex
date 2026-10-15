@@ -1,0 +1,91 @@
+# pstack-for-codex
+
+An unofficial Codex adaptation of [Lauren Tan's pstack](https://github.com/cursor/plugins/tree/main/pstack) workflows, skills, and agents. It also bundles the `control-ui`, `control-cli`, and `deslop` skills from [cursor-team-kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit). Both upstream snapshots are pinned, and Codex adaptations are tracked as reproducible patches.
+
+Ordinary roles default to Sol 6.1 through Codex. The hardest tasks use Opus 5.5 through an existing Claude Code CLI, and candidate and review panels use both models. The default configuration requires an installed, authenticated Claude Code CLI with Opus 5.5 access.
+
+Setup can save an all-Sol configuration, but that configuration cannot satisfy upstream steps requiring a different model or model family, such as the final audit in `show-me-your-work` and the eval playbook. See the [plugin manifest](plugin/plugin.json) for the current version and the [compatibility notes](docs/spec.md) for verified workflows and limitations.
+
+## Requirements
+
+- Codex with plugin and native subagent support, signed in to an account with access to your selected models.
+- Node.js 24.12+, Corepack, and Git to build from source. Corepack uses the pnpm version pinned in `package.json`.
+- Python 3.11+ for agent registration, using its standard-library TOML parser. Setup uses `python3` by default and can select another existing interpreter.
+- An installed, authenticated Claude Code CLI 2.1.280+ with Opus 5.5 access for the default Claude roles. Setup checks CLI capabilities; detection alone does not establish model access.
+- Bun 1.2+ for the orchestration and PR watcher helpers. Their first use installs locked dependencies in a cache outside the plugin and may need network access. GitHub PR workflows also need an authenticated GitHub CLI (`gh`).
+
+## Build and install
+
+Run these commands from the root of a checkout of this repository. Each build needs a new output directory: `initial` below must not already exist. Keep `.local/artifacts` as the fixed marketplace path.
+
+```sh
+corepack pnpm install --frozen-lockfile
+corepack pnpm build
+mkdir -p .local/artifacts
+node dist/cli.js build-plugin --output "$PWD/.local/artifacts/initial" --marketplace "$PWD/.local/artifacts"
+node dist/cli.js verify-plugin --artifact "$PWD/.local/artifacts/initial"
+codex plugin marketplace add "$PWD/.local/artifacts"
+codex plugin add pstack-for-codex@pstack-for-codex
+```
+
+The build replays the adaptation patches, checks file bytes and permissions, and creates a plugin artifact with its marketplace and integrity metadata. `--marketplace` selects the artifact only after verification succeeds. Building and selecting an artifact are separate from installing it in Codex.
+
+## Set up and use
+
+Open a Codex chat in your project and run:
+
+```text
+$pstack-for-codex:setup-pstack
+```
+
+Setup registers the two bundled agents and a general-purpose role, then saves your reasoning budget and role choices in `$CODEX_HOME/pstack-for-codex/models.json` (default `~/.codex/pstack-for-codex/models.json`). It preserves unrelated settings and stops on conflicts with user-edited managed files or declarations.
+
+After setup, start a new chat so Codex discovers the registered roles. For a first walkthrough, try:
+
+```text
+$pstack-for-codex:how explain how this project starts up.
+```
+
+Use `$pstack-for-codex:poteto-mode` at the start of a development task to select a playbook, or `$pstack-for-codex:poteto-help` to find a suitable workflow. The [pstack guide](plugin/docs/guide/README.md) covers prompting, review, verification, and longer runs.
+
+## Update or restore
+
+To build another version, use the desired source checkout and repeat the build steps with a new output directory, such as `.local/artifacts/update-1`, and the same fixed marketplace path. Existing artifacts are retained.
+
+To select a previously built artifact, replace `EXISTING_ARTIFACT` with its directory name:
+
+```sh
+node dist/cli.js promote-plugin --artifact "$PWD/.local/artifacts/EXISTING_ARTIFACT" --marketplace "$PWD/.local/artifacts"
+```
+
+Building or promoting an artifact does not refresh the installed plugin cache. After either operation, reinstall the selected artifact:
+
+```sh
+codex plugin add pstack-for-codex@pstack-for-codex
+```
+
+Run `$pstack-for-codex:setup-pstack` again to synchronize its managed registrations. Saved model choices are retained. Before restoring an older all-Sol bundle, use the current setup to explicitly save Codex-only role choices: older helpers reject the mixed-executor schema 2, while native-only schema 1 remains compatible.
+
+## Remove
+
+Before removing the plugin, run `$pstack-for-codex:setup-pstack` and ask it to unregister its managed agents. This removes unchanged owned registrations and leaves your model preferences in place. Then remove the plugin:
+
+```sh
+codex plugin remove pstack-for-codex@pstack-for-codex
+```
+
+There is no automatic uninstall hook to clean up registered agents after the plugin is removed.
+
+## Development and sources
+
+For contributions:
+
+1. Keep the pinned `upstream/` snapshots unchanged during adaptation work. Review source updates through the [upstream candidate workflow](docs/stack.md#review-an-upstream-update).
+2. Implement Codex adaptations in `plugin/`, record them in a new patch, and [verify patch replay](docs/stack.md#record-an-adaptation).
+
+- [Design and compatibility](docs/spec.md): adaptation behavior, source invariants, and verified runtime scope.
+- [Development and maintenance](docs/stack.md): verification, patch management, upstream candidates, and artifact commands. The full verification workflow also requires `tar`.
+- [Original pstack README](upstream/pstack/README.md): upstream project background.
+- [pstack source lock](upstream.lock.json) and [cursor-team-kit source lock](dependencies.lock.json): pinned revisions and hashes.
+
+The original Codex adaptation code and documentation are released under the [MIT license](LICENSE). Plugin bundles include this license at `licenses/pstack-for-codex/LICENSE`. pstack is by Lauren Tan and retains its [MIT license](upstream/pstack/LICENSE). The bundled cursor-team-kit skills retain Cursor's [MIT license](upstream/cursor-team-kit/LICENSE). Their original copyright and license notices are preserved in the distribution.

@@ -1,0 +1,54 @@
+{
+  "name": "pstack-for-codex",
+  "version": "0.1.0-dev.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Maintain and verify a Codex adaptation of pstack",
+  "homepage": "https://github.com/ystory/pstack-for-codex#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ystory/pstack-for-codex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ystory/pstack-for-codex/issues"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.13.0",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "bin": {
+    "pstack-for-codex": "dist/cli.js"
+  },
+  "files": [
+    "LICENSE",
+    "dist",
+    "upstream/pstack",
+    "upstream/pstack/.gitignore",
+    "upstream.lock.json",
+    "plugin",
+    "plugin/.gitignore",
+    "patches",
+    "upstream/cursor-team-kit",
+    "dependencies.lock.json",
+    "distribution-policy.json"
+  ],
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.ts",
+    "build": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true });\" && tsc --project tsconfig.build.json",
+    "package:test": "node scripts/check-package.ts",
+    "upstream:verify": "node src/cli.ts verify-upstream",
+    "upstream:check": "node src/cli.ts check-upstream",
+    "patches:verify": "node src/cli.ts verify-patches",
+    "plugin:build": "node src/cli.ts build-plugin",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm package:test && pnpm upstream:verify && pnpm patches:verify"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2"
+  }
+}

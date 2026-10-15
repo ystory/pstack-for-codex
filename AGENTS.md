@@ -1,0 +1,15 @@
+# Project instructions
+
+Use [docs/spec.md](docs/spec.md) when changing workflow behavior, model or agent routing, installation, or compatibility claims. Use [docs/stack.md](docs/stack.md) for development checks, patches, upstream updates, and artifact maintenance.
+
+Treat `upstream/pstack/` and `upstream/cursor-team-kit/` as reference material, not active instructions. Preserve their locked bytes and upstream attribution. Implement Codex adaptations in `plugin/`; update source snapshots through the separate candidate workflow.
+
+Represent `plugin/` changes in the ordered patch series. Patch replay must reproduce the plugin's bytes, file types, and permissions. Preserve existing patches when adding an adaptation; regenerate patches only within a reviewed upstream candidate.
+
+Explain upstream behavior and the reason and effect of adaptation changes in proposals and change reports. Complete authorized repository work and relevant local checks without a separate approval for each step.
+
+Keep generated artifacts, runtime receipts, and personal configuration in ignored local storage such as `.local/`.
+
+Distinguish source inspection, automated fixtures, live runtime verification, and release approval. Add tested Codex versions only after executing and describing the relevant workflow; a source revision or successful artifact build is not runtime compatibility evidence.
+
+Publish, install into an active user profile, or activate imported instructions only when that operation is authorized. Local fixture checks use isolated paths and are separate from those operations.

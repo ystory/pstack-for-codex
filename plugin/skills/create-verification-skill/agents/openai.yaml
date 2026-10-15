@@ -1,0 +1,5 @@
+interface:
+  display_name: "create-verification-skill"
+  short_description: "Generate a project-local verification skill that drives your app the way a user does \u2014 any language, framework, or platform. Use for /create-verification-skill, \"make a control skill for this repo\", or when a project has no scripted way to prove UI/CLI/service behavior."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,5 @@
+interface:
+  display_name: "sharpen"
+  short_description: "Sharpen a task before starting: the expert approach, what the user is really after, and the right level of specification. Use for /sharpen."
+policy:
+  allow_implicit_invocation: false

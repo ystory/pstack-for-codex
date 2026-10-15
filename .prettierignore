@@ -1,0 +1,6 @@
+upstream/**
+plugin/**
+dist/**
+pnpm-lock.yaml
+node_modules/**
+.local/**
