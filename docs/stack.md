@@ -4,7 +4,7 @@ The [design document](spec.md) describes source integrity, adaptations, and comp
 
 ## Development checks
 
-Use the Node requirement and pinned package manager in [package.json](../package.json). Setup checks also require Python 3.11 or later for the standard-library TOML parser.
+Maintainers need Node.js 24.12+, Corepack with the pnpm version pinned in [package.json](../package.json), and Git. Setup checks also require Python 3.11 or later for the standard-library TOML parser. Consumers installing the committed plugin from GitHub do not need Corepack, pnpm, or a build.
 
 ```sh
 corepack pnpm install --frozen-lockfile
@@ -30,6 +30,13 @@ Replace `NNNN` with the next unused four-digit series number. `--paths` accepts 
 
 ## Build and select an artifact
 
+Build the maintainer CLI before using the artifact commands:
+
+```sh
+corepack pnpm install --frozen-lockfile
+corepack pnpm build
+```
+
 Choose a new output directory for each artifact. A build verifies its inputs and produces `plugin/`, `.agents/plugins/marketplace.json`, and `artifact.json`.
 
 ```sh
@@ -46,7 +53,16 @@ Select or restore an existing child artifact with:
 node dist/cli.js promote-plugin --artifact "$PWD/.local/artifacts/ARTIFACT_NAME" --marketplace "$PWD/.local/artifacts"
 ```
 
-Replace `ARTIFACT_NAME` with an existing directory name. Promotion verifies the artifact before changing the marketplace. Building, verifying, or selecting an artifact does not install it, update an installed cache, activate instructions, or establish runtime compatibility. Installation and setup are described in the [README](../README.md).
+Replace `ARTIFACT_NAME` with an existing directory name. Promotion verifies the artifact before changing the marketplace. Building, verifying, or selecting an artifact does not install it, update an installed cache, activate instructions, or establish runtime compatibility.
+
+To install a selected local artifact, add the fixed local marketplace and install its plugin:
+
+```sh
+codex plugin marketplace add "$PWD/.local/artifacts"
+codex plugin add pstack-for-codex@pstack-for-codex
+```
+
+After building or promoting another artifact, repeat `codex plugin add pstack-for-codex@pstack-for-codex`, then rerun setup. For the GitHub installation route and setup, see the [README](../README.md). Both routes use the same marketplace identity; use the route you intend to maintain.
 
 ## Review an upstream update
 

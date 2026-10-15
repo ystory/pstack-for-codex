@@ -13,7 +13,9 @@ pstack-for-codex distributes pstack skills and agents as one versioned Codex plu
 
 Source snapshots are reference material, not instructions for agents working on this repository. Adaptations live in `plugin/` and retain upstream attribution and licenses. Source lock hashes cover sorted relative paths and file bytes; patch replay and artifact verification additionally compare file types and permissions. Symlinks are rejected.
 
-A generated artifact contains the entire `plugin/` tree, native marketplace metadata, and `artifact.json` with source, patch, integrity, and recorded compatibility metadata. A fixed local marketplace can select a verified child artifact without rewriting older artifacts. Selection, installation into Codex's cache, setup, and runtime execution are separate operations.
+The repository's `.agents/plugins/marketplace.json` exposes the committed `plugin/` tree through Codex's Git marketplace support. Consumers can install from the GitHub URL without building the maintainer CLI. The Git and generated local marketplaces share the `pstack-for-codex` identity.
+
+A generated artifact contains the entire `plugin/` tree, native marketplace metadata, and `artifact.json` with source, patch, integrity, and recorded compatibility metadata. A fixed local marketplace can select a verified child artifact without rewriting older artifacts. Local artifact selection, installation into Codex's cache, setup, and runtime execution are separate operations.
 
 ## Codex adaptations
 

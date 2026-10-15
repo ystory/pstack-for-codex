@@ -4,12 +4,14 @@ In this page you install the plugin, pick which models pstack uses, and run your
 
 ## Install the plugin
 
-Install the local marketplace artifact described in the [plugin README](../../README.md). In a terminal, use the absolute path to the extracted artifact:
+Install from the GitHub marketplace described in the [plugin README](../../README.md). No repository build is needed:
 
 ```sh
-codex plugin marketplace add /absolute/path/to/pstack-for-codex-artifact
+codex plugin marketplace add https://github.com/ystory/pstack-for-codex.git
 codex plugin add pstack-for-codex@pstack-for-codex
 ```
+
+For a local distribution artifact, replace the GitHub URL with its absolute directory path. Both routes use the same marketplace identity. The [repository README](https://github.com/ystory/pstack-for-codex#update-or-restore) explains updates and switching from an existing local marketplace.
 
 Start a new Codex chat in your project and select `$pstack-for-codex:setup-pstack`. Installing the plugin and running setup are separate steps.
 

@@ -9,26 +9,22 @@ Setup can save an all-Sol configuration, but that configuration cannot satisfy u
 ## Requirements
 
 - Codex with plugin and native subagent support, signed in to an account with access to your selected models.
-- Node.js 24.12+, Corepack, and Git to build from source. Corepack uses the pnpm version pinned in `package.json`.
+- Git for Codex to fetch the GitHub marketplace.
+- Node.js 24.12+ for setup and the bundled runtime helpers.
 - Python 3.11+ for agent registration, using its standard-library TOML parser. Setup uses `python3` by default and can select another existing interpreter.
 - An installed, authenticated Claude Code CLI 2.1.280+ with Opus 5.5 access for the default Claude roles. Setup checks CLI capabilities; detection alone does not establish model access.
 - Bun 1.2+ for the orchestration and PR watcher helpers. Their first use installs locked dependencies in a cache outside the plugin and may need network access. GitHub PR workflows also need an authenticated GitHub CLI (`gh`).
 
-## Build and install
+## Install
 
-Run these commands from the root of a checkout of this repository. Each build needs a new output directory: `initial` below must not already exist. Keep `.local/artifacts` as the fixed marketplace path.
+Add the GitHub marketplace, then install the plugin:
 
 ```sh
-corepack pnpm install --frozen-lockfile
-corepack pnpm build
-mkdir -p .local/artifacts
-node dist/cli.js build-plugin --output "$PWD/.local/artifacts/initial" --marketplace "$PWD/.local/artifacts"
-node dist/cli.js verify-plugin --artifact "$PWD/.local/artifacts/initial"
-codex plugin marketplace add "$PWD/.local/artifacts"
+codex plugin marketplace add https://github.com/ystory/pstack-for-codex.git
 codex plugin add pstack-for-codex@pstack-for-codex
 ```
 
-The build replays the adaptation patches, checks file bytes and permissions, and creates a plugin artifact with its marketplace and integrity metadata. `--marketplace` selects the artifact only after verification succeeds. Building and selecting an artifact are separate from installing it in Codex.
+Codex reads the repository's marketplace catalog and installs the committed `plugin/` directory. You do not need to clone the repository, install project dependencies, or build it first. See [Development and maintenance](docs/stack.md) to build and verify a local artifact instead.
 
 ## Set up and use
 
@@ -50,21 +46,18 @@ Use `$pstack-for-codex:poteto-mode` at the start of a development task to select
 
 ## Update or restore
 
-To build another version, use the desired source checkout and repeat the build steps with a new output directory, such as `.local/artifacts/update-1`, and the same fixed marketplace path. Existing artifacts are retained.
-
-To select a previously built artifact, replace `EXISTING_ARTIFACT` with its directory name:
+For a GitHub installation, refresh the Git marketplace and explicitly reinstall the plugin:
 
 ```sh
-node dist/cli.js promote-plugin --artifact "$PWD/.local/artifacts/EXISTING_ARTIFACT" --marketplace "$PWD/.local/artifacts"
-```
-
-Building or promoting an artifact does not refresh the installed plugin cache. After either operation, reinstall the selected artifact:
-
-```sh
+codex plugin marketplace upgrade pstack-for-codex
 codex plugin add pstack-for-codex@pstack-for-codex
 ```
 
-Run `$pstack-for-codex:setup-pstack` again to synchronize its managed registrations. Saved model choices are retained. Before restoring an older all-Sol bundle, use the current setup to explicitly save Codex-only role choices: older helpers reject the mixed-executor schema 2, while native-only schema 1 remains compatible.
+Run `$pstack-for-codex:setup-pstack` again to synchronize its managed registrations, then start a new chat. Saved model choices are retained.
+
+To switch an existing local `pstack-for-codex` marketplace to GitHub, run the two [install commands](#install) above, then rerun setup and start a new chat. Adding the Git URL selects that source for the same marketplace identity; `marketplace upgrade` alone does not turn a local source into a Git source. For building, selecting, or restoring local artifacts, see [Development and maintenance](docs/stack.md#build-and-select-an-artifact).
+
+Before restoring an older all-Sol bundle, use the current setup to explicitly save Codex-only role choices: older helpers reject the mixed-executor schema 2, while native-only schema 1 remains compatible. This does not make all-Sol choices satisfy steps that require a different model or model family.
 
 ## Remove
 
