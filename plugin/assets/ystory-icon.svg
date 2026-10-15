@@ -1,0 +1,18 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  color="#E60023"
+  role="img"
+  aria-labelledby="ystory-title"
+>
+  <title id="ystory-title">ystory</title>
+  <path
+    d="M4 12V9H3V6H2V3H1V0H3V3H4V6H5V9H6V12H8V9H9V6H10V3H11V0H13V3H12V6H11V9H10V12H9V14H8V16H7V17H6V18H3V16H6V14H5V12Z"
+    transform="matrix(2.4 0 0 2.4 16.8 13.4)"
+    fill="currentColor"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linejoin="miter"
+    paint-order="stroke fill"
+  />
+</svg>

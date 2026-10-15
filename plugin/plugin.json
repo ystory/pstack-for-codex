@@ -28,11 +28,12 @@
         "longDescription": "An unofficial Codex adaptation of Lauren Tan's pstack workflows, skills, and agents. Includes control-ui, control-cli, and deslop from Cursor's cursor-team-kit.\n\nRun setup-pstack to register agents and choose models, then use poteto-mode to route engineering tasks through investigation, design, implementation, review, and verification playbooks.\n\nThis is a skills-only plugin that uses a local Codex executor with native subagent support. Setup requires Node.js 24.12+ and Python 3.11+. Defaults require an installed, authenticated Claude Code CLI with Opus 5.5 access as well as access to Sol 6.1 in Codex. All-Sol choices cannot satisfy steps that require a different model or model family.\n\nUpstream attribution and licenses are preserved. See the repository for complete requirements and tested compatibility.",
         "developerName": "ystory",
         "category": "Developer Tools",
-        "logo": "./assets/codex-port.svg",
-        "composerIcon": "./assets/codex-port.svg",
+        "logo": "./assets/ystory-icon.svg",
+        "composerIcon": "./assets/ystory-icon.svg",
         "websiteURL": "https://github.com/ystory/pstack-for-codex",
         "supportURL": "https://github.com/ystory/pstack-for-codex/issues",
-        "privacyPolicyURL": "https://github.com/ystory/pstack-for-codex/blob/main/plugin/PRIVACY.md"
+        "privacyPolicyURL": "https://github.com/ystory/pstack-for-codex/blob/main/plugin/PRIVACY.md",
+        "termsOfServiceURL": "https://github.com/ystory/pstack-for-codex/blob/main/plugin/TERMS.md"
       }
     }
   }
