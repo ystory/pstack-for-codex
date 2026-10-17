@@ -1,5 +1,5 @@
 diff --git a/.cursor-plugin/plugin.json b/.cursor-plugin/plugin.json
-index 26d0f6d..0695ece 100644
+index 9172fd0..0695ece 100644
 --- a/.cursor-plugin/plugin.json
 +++ b/.cursor-plugin/plugin.json
 @@ -1,7 +1,7 @@
@@ -7,7 +7,7 @@ index 26d0f6d..0695ece 100644
 -	"name": "pstack",
 +	"name": "pstack-for-codex",
  	"displayName": "pstack",
--	"version": "0.15.24",
+-	"version": "0.15.25",
 +	"version": "0.1.0-dev.0",
  	"description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
  	"author": {
@@ -212,13 +212,13 @@ index 0000000..f92a357
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-attack-the-premise/agents/openai.yaml b/skills/principle-attack-the-premise/agents/openai.yaml
 new file mode 100644
-index 0000000..f9030ec
+index 0000000..87adf73
 --- /dev/null
 +++ b/skills/principle-attack-the-premise/agents/openai.yaml
 @@ -0,0 +1,5 @@
 +interface:
 +  display_name: "principle-attack-the-premise"
-+  short_description: "Apply when two or more fixes that share one premise have failed the same gate. Take a census of which actors hold the imbalance before the next fix, then question the premise instead of writing another fix that assumes it."
++  short_description: "Apply when two or more fixes that share one premise have failed the same gate. Write the premise down and test it directly before you write another fix that assumes it."
 +policy:
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-boundary-discipline/agents/openai.yaml b/skills/principle-boundary-discipline/agents/openai.yaml
@@ -289,13 +289,13 @@ index 0000000..14a0d68
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-fix-root-causes/agents/openai.yaml b/skills/principle-fix-root-causes/agents/openai.yaml
 new file mode 100644
-index 0000000..fbfbbc6
+index 0000000..597d396
 --- /dev/null
 +++ b/skills/principle-fix-root-causes/agents/openai.yaml
 @@ -0,0 +1,5 @@
 +interface:
 +  display_name: "principle-fix-root-causes"
-+  short_description: "Apply when debugging. Trace each symptom to its root cause and fix it there; reproduce first, ask why until you reach it, resist nil-check guards that silence crashes."
++  short_description: "Apply when debugging. Trace each symptom back to the first place the system went wrong and fix it there. A guard is a fix only when the state it handles is legitimate."
 +policy:
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-foundational-thinking/agents/openai.yaml b/skills/principle-foundational-thinking/agents/openai.yaml
@@ -454,24 +454,24 @@ index 0000000..1eb68e8
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-test-behavior-not-implementation/agents/openai.yaml b/skills/principle-test-behavior-not-implementation/agents/openai.yaml
 new file mode 100644
-index 0000000..6240aa7
+index 0000000..e607e44
 --- /dev/null
 +++ b/skills/principle-test-behavior-not-implementation/agents/openai.yaml
 @@ -0,0 +1,5 @@
 +interface:
 +  display_name: "principle-test-behavior-not-implementation"
-+  short_description: "Apply when you write, change, or keep a test. Call the code as its users do and assert the exact result they see. Rewrite or delete a test that would pass if every imported function returned undefined."
++  short_description: "Apply when you write, change, or keep a test. Assert what the code's users can observe, so that the test fails when that behavior breaks and keeps passing when only the internals change."
 +policy:
 +  allow_implicit_invocation: false
 diff --git a/skills/principle-type-system-discipline/agents/openai.yaml b/skills/principle-type-system-discipline/agents/openai.yaml
 new file mode 100644
-index 0000000..b1297e0
+index 0000000..fdf7fda
 --- /dev/null
 +++ b/skills/principle-type-system-discipline/agents/openai.yaml
 @@ -0,0 +1,5 @@
 +interface:
 +  display_name: "principle-type-system-discipline"
-+  short_description: "Apply when designing types, reviewing a function signature, or writing code in any statically-typed language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, refuse to lie to the compiler, exhaust variants, derive from authoritative schemas."
++  short_description: "Apply when designing types, reviewing a function signature, or writing code in any statically-typed language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, exhaust variants, derive from authoritative schemas."
 +policy:
 +  allow_implicit_invocation: false
 diff --git a/skills/recall/agents/openai.yaml b/skills/recall/agents/openai.yaml

@@ -1,5 +1,5 @@
 diff --git a/README.md b/README.md
-index 1afb4b1..82b9f8e 100644
+index dd89211..bed40ea 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,4 +1,6 @@
@@ -10,23 +10,31 @@ index 1afb4b1..82b9f8e 100644
  
  i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.
  
-@@ -14,38 +16,45 @@ fork it. improve it. make it yours. PRs are welcome!
+@@ -14,49 +16,45 @@ fork it. improve it. make it yours. PRs are welcome!
  
  ## install
  
 -```bash
 -/add-plugin pstack
+-```
+-
+-in claude code:
 +Add the provided distribution directory as a local Codex marketplace, then install the plugin:
-+
+ 
+-```bash
+-/plugin marketplace add cursor/plugins
+-/plugin install pstack@cursor-plugins
 +```sh
 +codex plugin marketplace add ARTIFACT_DIRECTORY
 +codex plugin add pstack-for-codex@pstack-for-codex-local
  ```
  
+-claude code prefixes plugin commands and agents, so `/poteto-mode` is `/pstack:poteto-mode`. the [claude code adapter](./docs/harness/claude-code.md) maps every other cursor name.
 +Setup needs an existing Node.js 24.12+ and Python 3.11+ interpreter; it uses only Python's standard-library TOML parser. Codex presents setup onboarding after installation. Setup registers the two bundled custom-agent definitions and their native config references, plus a description-only `pstack-general-purpose` role that leaves your existing default role intact. It stores your role choices in `$CODEX_HOME/pstack-for-codex/models.json`, defaulting to `~/.codex`. Re-run setup after an update or a prior-version restore to synchronize its owned agent files. Existing user edits stop replacement; role preferences are retained.
-+
+ 
+-claude code installs a generated copy of pstack from [`harness/pstack/`](https://github.com/cursor/plugins/tree/main/harness/pstack) at the repository root. after changing `skills/`, `agents/`, `docs/harness/claude-code.md`, or `plugin.json`, run `node scripts/generate-pstack-harness-trees.mjs` from the repository root and commit the result. ci fails until you do.
 +Before removing the plugin, ask setup to unregister its managed agents. It removes only its unchanged agent files and owned role declarations; unrelated configuration and your model preferences remain. Then use `codex plugin remove pstack-for-codex@pstack-for-codex-local`. Native plugin removal does not run an agent-cleanup hook.
-+
+ 
  ## get started
  
  two steps:
@@ -67,7 +75,7 @@ index 1afb4b1..82b9f8e 100644
  morning.
  ```
  
-@@ -90,20 +99,20 @@ when invoked it:
+@@ -101,20 +99,20 @@ when invoked it:
  
  the full rules and playbooks live in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/SKILL.md).
  
@@ -93,7 +101,7 @@ index 1afb4b1..82b9f8e 100644
  ```
  
  <details>
-@@ -111,36 +120,36 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
+@@ -122,36 +120,36 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
  
  | skill | use it when |
  |---|---|
@@ -160,7 +168,7 @@ index 1afb4b1..82b9f8e 100644
  
  </details>
  
-@@ -148,60 +157,60 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
+@@ -159,60 +157,60 @@ to keep [`/poteto-mode`](./skills/poteto-mode/SKILL.md) on across turns, pick it
  
  ### examples
  
@@ -247,7 +255,7 @@ index 1afb4b1..82b9f8e 100644
  
  ## principles
  
-@@ -239,35 +248,25 @@ twenty-four short skills, one principle each. `poteto-mode` indexes them inline
+@@ -250,35 +248,27 @@ twenty-four short skills, one principle each. `poteto-mode` indexes them inline
  
  </details>
  
@@ -260,7 +268,8 @@ index 1afb4b1..82b9f8e 100644
 -- `/deslop` and the `deslop` skill ship in the `cursor-team-kit` plugin.
 -- `control-cli` (for CLIs and TUIs) and `control-ui` (for browser, Electron, web) ship in `cursor-team-kit` too.
 -- `/create-skill` is a cursor built-in. cursor also ships a built-in `/babysit`; inside `poteto-mode`, the [babysit playbook](./skills/poteto-mode/playbooks/babysit.md) supersedes it for pr-status requests.
--
++The [upstream Claude Code guide](./docs/harness/claude-code.md) describes running pstack with Claude Code as the parent agent. This Codex distribution keeps its [Claude CLI bridge](./skills/poteto-mode/references/codex-execution.md) and does not require the upstream Claude plugin.
+ 
 -install `cursor-team-kit` alongside pstack if you want the full set.
 +Use the installed `$skill-creator` for skill authoring. Inside `poteto-mode`, the [babysit playbook](./skills/poteto-mode/playbooks/babysit.md) handles PR status requests.
  
@@ -285,7 +294,7 @@ index 1afb4b1..82b9f8e 100644
 -pstack also ships a dormant [benny automation pack](./automations/benny/). benny triages slack issue reports, then reproduces and fixes confirmed bugs with real ui evidence. its files are not registered as slash skills.
 +Models are configurable through [`$pstack-for-codex:setup-pstack`](./skills/setup-pstack/SKILL.md). Setup uses the available Codex model catalog and stores the selected budget and role assignments in a user-global JSON file. Consumers read that file; absent settings use the bundled defaults.
  
--to set it up, point cursor at [`FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md). setup copies the pack into the target repository at `.cursor/automations/benny/`, enables pstack there for shared skills, and keeps user configuration outside the copied pack.
+-to set it up, point cursor at [`FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md). setup copies the pack into the target repository at `.cursor/automations/benny/`, enables pstack there for shared skills, and keeps user configuration outside the copied pack. benny runs on cursor automations, so it is cursor-only.
 +Saved choices remain separate from plugin versions. Re-run setup to review or change them after an update; an update or prior-version restore preserves the preference file.
  
  ## license
@@ -1070,7 +1079,7 @@ index cbad067..212d51a 100644
  
  Next: [Steer with principle names](./08-principles.md).
 diff --git a/docs/guide/08-principles.md b/docs/guide/08-principles.md
-index 0aaec93..9c08538 100644
+index 5b17980..7af41f4 100644
 --- a/docs/guide/08-principles.md
 +++ b/docs/guide/08-principles.md
 @@ -1,6 +1,6 @@
@@ -1084,7 +1093,7 @@ index 0aaec93..9c08538 100644
 @@ -56,7 +56,7 @@ The verification principles define what counts as proof:
  - [Fix Root Causes](../../skills/principle-fix-root-causes/SKILL.md) reproduces and traces to the cause before changing code.
  - [Sequence Work into Verifiable Units](../../skills/principle-sequence-verifiable-units/SKILL.md) ends each small unit in a check before starting the next.
- - [Test Behavior, Not Implementation](../../skills/principle-test-behavior-not-implementation/SKILL.md) calls the code the way its users do and asserts a literal expected value, and deletes a test that would still pass if every imported function returned `undefined`.
+ - [Test Behavior, Not Implementation](../../skills/principle-test-behavior-not-implementation/SKILL.md) asserts what the code's users can observe, so a test fails when that behavior breaks and survives a change to the internals.
 -- [Explain the Number](../../skills/principle-explain-the-number/SKILL.md) names what limits a measured number and rules out that it measured something else, before anyone trusts or reports it. [`/benchmark-checklist`](../../skills/benchmark-checklist/SKILL.md) turns it into seven questions you answer from real runs.
 +- [Explain the Number](../../skills/principle-explain-the-number/SKILL.md) names what limits a measured number and rules out that it measured something else, before anyone trusts or reports it. [`$pstack-for-codex:benchmark-checklist`](../../skills/benchmark-checklist/SKILL.md) turns it into seven questions you answer from real runs.
  

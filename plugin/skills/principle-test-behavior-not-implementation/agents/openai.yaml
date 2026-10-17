@@ -1,5 +1,5 @@
 interface:
   display_name: "principle-test-behavior-not-implementation"
-  short_description: "Apply when you write, change, or keep a test. Call the code as its users do and assert the exact result they see. Rewrite or delete a test that would pass if every imported function returned undefined."
+  short_description: "Apply when you write, change, or keep a test. Assert what the code's users can observe, so that the test fails when that behavior breaks and keeps passing when only the internals change."
 policy:
   allow_implicit_invocation: false
