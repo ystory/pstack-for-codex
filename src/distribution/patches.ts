@@ -25,12 +25,14 @@ export function runGit(
   root: string,
   args: string[],
   input?: Uint8Array,
+  env?: NodeJS.ProcessEnv,
 ): string {
   const result = spawnSync('git', args, {
     cwd: root,
     encoding: 'utf8',
     timeout: 30000,
     input,
+    env,
   });
   if (result.error) throw result.error;
   if (result.status !== 0)
@@ -67,11 +69,15 @@ export async function applyPatchSeries(
   destination: string,
 ): Promise<PatchRecord[]> {
   const patches = await readPatchSeries(projectRoot);
+  const env = {
+    ...process.env,
+    GIT_CEILING_DIRECTORIES: path.dirname(path.resolve(destination)),
+  };
   for (const patch of patches) {
     const bytes = await readFile(path.join(projectRoot, 'patches', patch.name));
     try {
-      runGit(destination, ['apply', '--check', '--binary', '-'], bytes);
-      runGit(destination, ['apply', '--binary', '-'], bytes);
+      runGit(destination, ['apply', '--check', '--binary', '-'], bytes, env);
+      runGit(destination, ['apply', '--binary', '-'], bytes, env);
     } catch (error) {
       throw new Error(
         `Patch conflict in ${patch.name}: ${error instanceof Error ? error.message : String(error)}`,

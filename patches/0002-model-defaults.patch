@@ -1,21 +1,21 @@
 diff --git a/README.md b/README.md
-index b26dfdd..dd89211 100644
+index 8d350cc..60a6f20 100644
 --- a/README.md
 +++ b/README.md
 @@ -38,7 +38,7 @@ two steps:
  
  new here? the [pstack guide](./docs/guide/README.md) walks you through a first real task, from setup and prompting through verification and overnight runs. stuck, or unsure which skill fits? ask [`/poteto-help`](./skills/poteto-help/SKILL.md).
  
--that's it. the other skills are situational; the mode skill uses them for you as needed. out of the box the mode splits work by model strength: code delegates (feature, refactoring, bug fix, perf, hillclimb) go to grok, while the hardest changes, prose, and judgment go to opus 5.5. the default panel is opus 5.5 / grok. [`/setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
-+that's it. the other skills are situational; the mode skill uses them for you as needed. out of the box, every role defaults to sol 6.1. the default panel is sol 6.1 / sol 6.1. [`/setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
+-that's it. the other skills are situational, and the mode skill uses them for you as needed. out of the box the mode splits work by model strength: code delegates (feature, refactoring, bug fix, perf, hillclimb) go to grok, while the hardest changes, prose, and judgment go to opus 5.5. the default panel is opus 5.5 / grok. [`/setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
++that's it. the other skills are situational, and the mode skill uses them for you as needed. out of the box, every role defaults to sol 6.1. the default panel is sol 6.1 / sol 6.1. [`/setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
  
  ## usage
  
 diff --git a/docs/guide/01-setup.md b/docs/guide/01-setup.md
-index 62420df..8a87be7 100644
+index 2c2ef34..d789eed 100644
 --- a/docs/guide/01-setup.md
 +++ b/docs/guide/01-setup.md
-@@ -22,7 +22,7 @@ Run:
+@@ -24,7 +24,7 @@ Run:
  
  [`/setup-pstack`](../../skills/setup-pstack/SKILL.md) detects the models you have access to, asks for a reasoning budget, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `~/.cursor/rules/pstack-models.mdc`, a small rule every pstack skill reads.
  
@@ -88,7 +88,7 @@ index 94946d2..3cb79dc 100644
  Each reviewer gets `subagent_type: generalPurpose`, `readonly: true`, and `model` set to its configured entry, or its table default when there is no configured line. Omit `model` for an `auto` or `inherit-parent` entry, so that reviewer runs on the parent model.
  
 diff --git a/skills/poteto-mode/SKILL.md b/skills/poteto-mode/SKILL.md
-index 9295b7e..d57de3b 100644
+index 21993f5..ad38169 100644
 --- a/skills/poteto-mode/SKILL.md
 +++ b/skills/poteto-mode/SKILL.md
 @@ -92,9 +92,9 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
@@ -206,7 +206,7 @@ index 998ae65..5f26057 100644
  ## 4. Structural enforcement check
  
 diff --git a/skills/setup-pstack/SKILL.md b/skills/setup-pstack/SKILL.md
-index 90a9e57..5036c4a 100644
+index cb61b8d..071d6d1 100644
 --- a/skills/setup-pstack/SKILL.md
 +++ b/skills/setup-pstack/SKILL.md
 @@ -11,7 +11,7 @@ Write `~/.cursor/rules/pstack-models.mdc`, an always-applied rule that sets psta

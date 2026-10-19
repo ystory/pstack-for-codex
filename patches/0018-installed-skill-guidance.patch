@@ -10,7 +10,7 @@ index ee1b92c..7340a64 100644
  policy:
    allow_implicit_invocation: false
 diff --git a/skills/poteto-help/SKILL.md b/skills/poteto-help/SKILL.md
-index aa933e0..1a1ba02 100644
+index 4d6771b..010b339 100644
 --- a/skills/poteto-help/SKILL.md
 +++ b/skills/poteto-help/SKILL.md
 @@ -1,6 +1,6 @@
@@ -30,12 +30,14 @@ index aa933e0..1a1ba02 100644
  - Pick a skill for a situation
  - Fix a run that went wrong
  - Make pstack my own
-@@ -25,92 +25,92 @@ Infer the need from the message and the conversation. A named situation, such as
+@@ -25,95 +25,95 @@ Infer the need from the message and the conversation. A named situation, such as
  Check the state that changes the answer, and mention it only when it does:
  
  - Read the setup helper's model configuration with its absolute `scripts/models.mjs read` command. `source: default` means no saved Codex role configuration, so every role uses its bundled default.
 -- No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `$create-verification-skill` when the question is about proving a change works.
+-- No formal verification skill in the project means no property is checked past what tests reach. Mention `$create-formal-verification-skill` when the question is about a race, an invariant, or another case tests rarely hit. When one exists and the code it covers changed after the commit it records as last in sync, mention `$maintain-formal-verification-skill` if the question touches that code.
 +- No `verify-*` skill or other app harness in the project means agents have no scripted way to drive the app. Mention `$pstack-for-codex:create-verification-skill` when the question is about proving a change works.
++- No formal verification skill in the project means no property is checked past what tests reach. Mention `$pstack-for-codex:create-formal-verification-skill` when the question is about a race, an invariant, or another case tests rarely hit. When one exists and the code it covers changed after the commit it records as last in sync, mention `$pstack-for-codex:maintain-formal-verification-skill` if the question touches that code.
  
  When the model rule is missing and it matters, ask whether the user wants to pick a model for each role and a reasoning budget now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per chat. If the need is also unclear, ask both questions together. Offer two choices:
  
@@ -47,9 +49,9 @@ index aa933e0..1a1ba02 100644
  ## Get set up
  
  1. Install this Codex plugin using the path described in the bundled [README](../../README.md) and setup guide. Distinguish source packaging from runtime discovery and activation.
--2. Run [`$setup-pstack`](../setup-pstack/SKILL.md). It asks for a reasoning budget, maps a model to each role, and saves user-global Codex role configuration and registers the bundled custom agents. Start a new chat after registration so native agent discovery can reload them.
+-2. Run [`$setup-pstack`](../setup-pstack/SKILL.md). It asks for a reasoning budget, maps a model to each role, and saves user-global Codex role configuration and registers the bundled custom agents. Start a new chat after registration so native agent discovery can reload them. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
 -3. Start a real task with `$poteto-mode`, a goal, and a check that can pass or fail.
-+2. Run [`$pstack-for-codex:setup-pstack`](../setup-pstack/SKILL.md). It asks for a reasoning budget, maps a model to each role, and saves user-global Codex role configuration and registers the bundled custom agents. Start a new chat after registration so native agent discovery can reload them.
++2. Run [`$pstack-for-codex:setup-pstack`](../setup-pstack/SKILL.md). It asks for a reasoning budget, maps a model to each role, and saves user-global Codex role configuration and registers the bundled custom agents. Start a new chat after registration so native agent discovery can reload them. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.
 +3. Start a real task with `$pstack-for-codex:poteto-mode`, a goal, and a check that can pass or fail.
  
 -Installing changes nothing until the user invokes a skill. Only `$setup-pstack` loads from the user's words. The [README](../../README.md) and [guide page 1](../../docs/guide/01-setup.md) have the details. Offer to word their first prompt with them, per [`references/prompting.md`](references/prompting.md).
@@ -88,7 +90,7 @@ index aa933e0..1a1ba02 100644
 -| Know why code is shaped this way, or where a number came from | [`$why`](../why/SKILL.md) |
 -| Understand a change or subsystem, explained plainly | [`$teach`](../teach/SKILL.md) |
 -| Catch up on their own recent work on a topic | [`$recall`](../recall/SKILL.md) |
--| Catch up on what changed in this chat since their last message, in a few plain sentences and small visuals, with enough context to decide each action item | [`$ketchup`](../ketchup/SKILL.md) |
+-| Catch up on what changed in this chat since their last message, in plain words and small visuals, with every item waiting on them listed and decidable from the reply alone | [`$ketchup`](../ketchup/SKILL.md) |
 -| Know what a small diff could break outside itself | [`$blast-radius`](../blast-radius/SKILL.md) |
 -| Settle types and module shape before code that crosses a function boundary | [`$architect`](../architect/SKILL.md) |
 -| Get several attempts at one brief, merged into the best one | [`$arena`](../arena/SKILL.md) |
@@ -102,6 +104,8 @@ index aa933e0..1a1ba02 100644
 -| Hear the last reply again in plain words | [`$bro`](../bro/SKILL.md) |
 -| Give agents a scripted way to drive the app and prove behavior | [`$create-verification-skill`](../create-verification-skill/SKILL.md) |
 -| Bring a verification skill and its feature map back in line with the app | [`$maintain-verification-skill`](../maintain-verification-skill/SKILL.md) |
+-| Formally verify a race, invariant, or other property that tests rarely reach | [`$create-formal-verification-skill`](../create-formal-verification-skill/SKILL.md) |
+-| Bring a formal verification back in line after the code it covers changed, and learn whether a failure is drift or a bug | [`$maintain-formal-verification-skill`](../maintain-formal-verification-skill/SKILL.md) |
 -| Vet a performance number before reporting or acting on it | [`$benchmark-checklist`](../benchmark-checklist/SKILL.md) |
 -| Run a large or cross-cutting change, or one to review after stepping away | [`$figure-it-out`](../figure-it-out/SKILL.md) |
 -| Keep a decision log during a run, and review it afterward | [`$show-me-your-work`](../show-me-your-work/SKILL.md) |
@@ -118,7 +122,7 @@ index aa933e0..1a1ba02 100644
 +| Know why code is shaped this way, or where a number came from | [`$pstack-for-codex:why`](../why/SKILL.md) |
 +| Understand a change or subsystem, explained plainly | [`$pstack-for-codex:teach`](../teach/SKILL.md) |
 +| Catch up on their own recent work on a topic | [`$pstack-for-codex:recall`](../recall/SKILL.md) |
-+| Catch up on what changed in this chat since their last message, in a few plain sentences and small visuals, with enough context to decide each action item | [`$pstack-for-codex:ketchup`](../ketchup/SKILL.md) |
++| Catch up on what changed in this chat since their last message, in plain words and small visuals, with every item waiting on them listed and decidable from the reply alone | [`$pstack-for-codex:ketchup`](../ketchup/SKILL.md) |
 +| Know what a small diff could break outside itself | [`$pstack-for-codex:blast-radius`](../blast-radius/SKILL.md) |
 +| Settle types and module shape before code that crosses a function boundary | [`$pstack-for-codex:architect`](../architect/SKILL.md) |
 +| Get several attempts at one brief, merged into the best one | [`$pstack-for-codex:arena`](../arena/SKILL.md) |
@@ -132,6 +136,8 @@ index aa933e0..1a1ba02 100644
 +| Hear the last reply again in plain words | [`$pstack-for-codex:bro`](../bro/SKILL.md) |
 +| Give agents a scripted way to drive the app and prove behavior | [`$pstack-for-codex:create-verification-skill`](../create-verification-skill/SKILL.md) |
 +| Bring a verification skill and its feature map back in line with the app | [`$pstack-for-codex:maintain-verification-skill`](../maintain-verification-skill/SKILL.md) |
++| Formally verify a race, invariant, or other property that tests rarely reach | [`$pstack-for-codex:create-formal-verification-skill`](../create-formal-verification-skill/SKILL.md) |
++| Bring a formal verification back in line after the code it covers changed, and learn whether a failure is drift or a bug | [`$pstack-for-codex:maintain-formal-verification-skill`](../maintain-formal-verification-skill/SKILL.md) |
 +| Vet a performance number before reporting or acting on it | [`$pstack-for-codex:benchmark-checklist`](../benchmark-checklist/SKILL.md) |
 +| Run a large or cross-cutting change, or one to review after stepping away | [`$pstack-for-codex:figure-it-out`](../figure-it-out/SKILL.md) |
 +| Keep a decision log during a run, and review it afterward | [`$pstack-for-codex:show-me-your-work`](../show-me-your-work/SKILL.md) |
@@ -174,7 +180,7 @@ index aa933e0..1a1ba02 100644
  
  - "babysit this pr" or "check on pr 123" runs Babysit. It drives the PR to merge-ready and stops there. It doesn't merge unless the user asks to merge, land, or ship.
  - "land the stack" runs Shipping.
-@@ -119,21 +119,21 @@ Playbooks are step lists inside `$poteto-mode`, not skills, so they have no stan
+@@ -122,21 +122,21 @@ Playbooks are step lists inside `$poteto-mode`, not skills, so they have no stan
  - "full autopilot on this queue" runs Autopilot-full. "stack them, don't ship" runs Autopilot-stack.
  - "run the eval playbook" runs Eval.
  
@@ -202,7 +208,7 @@ index aa933e0..1a1ba02 100644
  | Parallel agents overwrote each other | Give each agent its own worktree and independent app ports/data/session resources. Serialize resources the host cannot isolate. |
  | An overnight run moved but finished nothing | Codex continuation needs a check that can pass or fail, an event watcher or heartbeat, and a saved resume point. See [guide page 7](../../docs/guide/07-overnight.md). |
  | The reply claims success from a green build | Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle. |
-@@ -142,9 +142,9 @@ For a run that drifts, [`references/prompting.md`](references/prompting.md) has
+@@ -145,9 +145,9 @@ For a run that drifts, [`references/prompting.md`](references/prompting.md) has
  
  ## Make pstack my own
  
@@ -244,10 +250,10 @@ index 3c7efa0..abd45ae 100644
  ## Design before the plan
  
 diff --git a/skills/poteto-help/references/recipes.md b/skills/poteto-help/references/recipes.md
-index 349f172..4e6d574 100644
+index b9a5148..16c4642 100644
 --- a/skills/poteto-help/references/recipes.md
 +++ b/skills/poteto-help/references/recipes.md
-@@ -4,46 +4,46 @@ Swap in the real paths, skills, and done checks. Informal wording works.
+@@ -4,48 +4,48 @@ Swap in the real paths, skills, and done checks. Informal wording works.
  
  ## Understand
  
@@ -301,11 +307,13 @@ index 349f172..4e6d574 100644
  ## Review and ship
  
 -- `$interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Read the dismissals too.
+-- `$create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` After merges or refactors in that code: `$maintain-formal-verification-skill`.
 -- `$swarm check every package under <dir> against its check script. one worker per package. one report.`
 -- `$poteto-mode open the pr. small ordered commits, evidence in the description.`
 -- `$poteto-mode babysit this pr. get it green.` For status only: `$poteto-mode check on pr <number>. anything outstanding?`
 -- `$poteto-mode land the stack.`
 +- `$pstack-for-codex:interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Read the dismissals too.
++- `$pstack-for-codex:create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` After merges or refactors in that code: `$pstack-for-codex:maintain-formal-verification-skill`.
 +- `$pstack-for-codex:swarm check every package under <dir> against its check script. one worker per package. one report.`
 +- `$pstack-for-codex:poteto-mode open the pr. small ordered commits, evidence in the description.`
 +- `$pstack-for-codex:poteto-mode babysit this pr. get it green.` For status only: `$pstack-for-codex:poteto-mode check on pr <number>. anything outstanding?`
@@ -315,12 +323,14 @@ index 349f172..4e6d574 100644
  
 -- `$poteto-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. use the Codex event-watch and heartbeat binding until done. if you're truly stuck after a few hours, stop and write up why.`
 -- `$show-me-your-work catch me up on what you did last night.` Read its Attention section first.
+-- `$ketchup` catches you up on this chat since your last message and lists every call that waits on you.
 -- `$poteto-mode full autopilot on this queue. each item is independent.`
 -- `$poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
 -- `$reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
 -- `$bro` restates the last reply in plain words.
 +- `$pstack-for-codex:poteto-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. use the Codex event-watch and heartbeat binding until done. if you're truly stuck after a few hours, stop and write up why.`
 +- `$pstack-for-codex:show-me-your-work catch me up on what you did last night.` Read its Attention section first.
++- `$pstack-for-codex:ketchup` catches you up on this chat since your last message and lists every call that waits on you.
 +- `$pstack-for-codex:poteto-mode full autopilot on this queue. each item is independent.`
 +- `$pstack-for-codex:poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
 +- `$pstack-for-codex:reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
@@ -360,7 +370,7 @@ index 3e6d261..27fc3eb 100644
  - Product UI strings are not documentation. Use your product's copy guidelines for those.
  - Indent code snippets with tabs. Write real paths. Make every count or tree claim true at the commit that lands it, and include the command that regenerates it.
 diff --git a/skills/typescript-best-practices/SKILL.md b/skills/typescript-best-practices/SKILL.md
-index 2c0279d..0001806 100644
+index e1e5aa7..d38effe 100644
 --- a/skills/typescript-best-practices/SKILL.md
 +++ b/skills/typescript-best-practices/SKILL.md
 @@ -7,7 +7,7 @@ disable-model-invocation: true

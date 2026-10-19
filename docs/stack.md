@@ -41,7 +41,7 @@ Choose a new output directory for each artifact. A build verifies its inputs and
 
 ```sh
 mkdir -p .local/artifacts
-node dist/cli.js build-plugin --output "$PWD/.local/artifacts/example" --marketplace "$PWD/.local/artifacts"
+node dist/cli.js build-plugin --output "$PWD/.local/artifacts/example"
 node dist/cli.js verify-plugin --artifact "$PWD/.local/artifacts/example"
 ```
 
@@ -66,26 +66,51 @@ After building or promoting another artifact, repeat `codex plugin add pstack-fo
 
 ## Review an upstream update
 
-`check-upstream` reads the public GitHub API and reports upstream changes. Candidate generation uses an explicit local `cursor/plugins` Git checkout and full commit SHA:
+Keep candidates, artifacts, and verification receipts in ignored `.local/` storage. Follow these steps for each update.
 
-```sh
-node dist/cli.js check-upstream
-node dist/cli.js upstream-candidate --source /absolute/path/to/cursor-plugins --revision FULL_COMMIT_SHA --output "$PWD/.local/candidates/update"
-```
+1. Inspect `git status`, both source locks, [distribution-policy.json](../distribution-policy.json), [patches/series](../patches/series), and [the design document](spec.md). Preserve unrelated worktree changes throughout the update. Use the checked-out repository to establish current state.
 
-Use a new candidate output directory. The command exports both source snapshots and locks, applies the current adaptations, and records source diffs, patch failures, unapplied patches, and distribution-policy conflicts. It leaves the current pins and marketplace selection unchanged. A candidate starts with an empty Codex tested-version list.
+2. Build the current maintainer CLI as described in [Build and select an artifact](#build-and-select-an-artifact). Resolve the intended target in a real `cursor/plugins` Git checkout with the expected origin. `check-upstream` reports public GitHub revisions but does not fetch that checkout. Resolve the full target commit and inspect the last commits for both source paths:
 
-Review `candidate-report.json`, both source diffs, and the candidate's `plugin/` tree. Resolve adaptation conflicts in that candidate rather than editing the current source snapshots. To regenerate its patch series, use a separate new output directory:
+   ```sh
+   node dist/cli.js check-upstream
+   git -C /absolute/path/to/cursor-plugins rev-parse 'TARGET_REF^{commit}'
+   git -C /absolute/path/to/cursor-plugins log -1 --format=%H FULL_COMMIT_SHA -- pstack
+   git -C /absolute/path/to/cursor-plugins log -1 --format=%H FULL_COMMIT_SHA -- cursor-team-kit
+   ```
 
-```sh
-node dist/cli.js regenerate-patches --candidate "$PWD/.local/candidates/update" --output "$PWD/.local/regenerated-patches"
-```
+   Replace `TARGET_REF` with the intended ref and `FULL_COMMIT_SHA` with its resolved 40-character SHA. The lock's `revision` identifies the selected source commit. Each `pathRevision` identifies the last commit affecting its source path.
 
-Regeneration retains existing logical file groups, records remaining reviewed changes in a final patch, and verifies replay. It preserves the original failure and unapplied-patch report. After reviewing the output, use its generated patch series in the candidate's `patches/` directory and verify the candidate:
+3. Create a candidate in a new output directory:
 
-```sh
-node dist/cli.js verify-patches --project "$PWD/.local/candidates/update"
-node dist/cli.js build-plugin --project "$PWD/.local/candidates/update" --output "$PWD/.local/artifacts/update-candidate"
-```
+   ```sh
+   node dist/cli.js upstream-candidate --source /absolute/path/to/cursor-plugins --revision FULL_COMMIT_SHA --output "$PWD/.local/candidates/update"
+   ```
 
-Replay equality proves reproducibility, not preservation of workflow meaning. Review behavior changes, the source policy, and applicable isolated or live runtime checks before integrating new pins. Publication and activation require authorization for those operations. Keep generated artifacts and runtime receipts under ignored `.local/` storage.
+   The command exports both source snapshots and locks, applies the current adaptations, and records source diffs, patch failures, unapplied patches, and policy conflicts. Current pins and marketplace selection stay unchanged. Confirm the candidate locks match the selected commit and path revisions. A candidate starts with an empty Codex tested-version list.
+
+4. Read `candidate-report.json`, both complete source diffs, and the candidate's actual `plugin/` tree. Separate upstream changes, mechanical refreshes of existing host mappings, and proposed new behavior-changing deviations. Apply the approval policy in [AGENTS.md](../AGENTS.md) before introducing a new deviation. Preserve source skill bodies except where approved host mappings require changes.
+
+   Review the full skill inventory and descriptions. Check every new skill's frontmatter and Codex invocation metadata, links, namespaces, and mapped paths. Confirm that model routing, executors, agents, distribution-policy exclusions, and attribution still match the documented adaptations.
+
+5. Resolve adaptation conflicts inside the candidate. Preserve the original failure reports and receipts. Refresh patches only in this reviewed candidate, keeping their order, logical ownership, and unaffected bytes. If you use the regeneration helper, choose a new output directory:
+
+   ```sh
+   node dist/cli.js regenerate-patches --candidate "$PWD/.local/candidates/update" --output "$PWD/.local/regenerated-patches"
+   ```
+
+   Read `regeneration-report.json` and every changed patch before copying the generated series into the candidate's `patches/`. The helper groups changes by existing patch paths and can add a final remainder patch. Shared paths do not justify moving a later adaptation into an earlier patch.
+
+6. Verify the candidate's source policy and integrity, then verify patch replay and a fresh artifact:
+
+   ```sh
+   node dist/cli.js verify-patches --project "$PWD/.local/candidates/update"
+   node dist/cli.js build-plugin --project "$PWD/.local/candidates/update" --output "$PWD/.local/artifacts/update-candidate"
+   node dist/cli.js verify-plugin --artifact "$PWD/.local/artifacts/update-candidate"
+   ```
+
+   Require equality of actual bytes, file types, and permissions. An applied-patch count alone proves neither equality nor preservation of workflow meaning. Run applicable isolated or live workflow checks and record their scope separately.
+
+7. Integrate the reviewed snapshots, locks, `plugin/`, and patch series as one coherent change. Copy reviewed exports rather than editing locked snapshots by hand. Run `corepack pnpm verify` after integration, then build and verify a fresh artifact from the repository. Omit `--marketplace` when verifying an artifact. For later changes confined to maintainer documentation, use the formatting and link checks described in [Development checks](#development-checks).
+
+8. Report the source version and target SHA, semantic differences, patch changes, and automated checks. State which live workflows ran or remain untested. Report artifact verification, marketplace selection, installation, and activation separately. Preserve the configured Git identity and signing settings when committing. Promote or install only within the authorized scope. Existing authorization covers its routine steps without another approval.

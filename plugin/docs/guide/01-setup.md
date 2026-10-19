@@ -15,6 +15,8 @@ For a local distribution artifact, replace the GitHub URL with its absolute dire
 
 Start a new Codex chat in your project and select `$pstack-for-codex:setup-pstack`. Installing the plugin and running setup are separate steps.
 
+Original pstack also installs in Claude Code with `/plugin marketplace add cursor/plugins`, then `/plugin install pstack@cursor-plugins`. Its [Claude Code adapter](../harness/claude-code.md) covers that setup and its `pstack:` command prefix. This distribution uses the [Claude CLI bridge](../../skills/poteto-mode/references/codex-execution.md) from a Codex parent.
+
 ## Pick your models
 
 Run:
@@ -37,13 +39,15 @@ Preferences containing a Claude executor use schema 2. Older all-Sol bundles rej
 
 You might be wondering what happens if you use Auto. Set a role to `inherit-parent` or `auto` to select your current parent chat's model and reasoning settings. Both values mean the same thing, and neither is a model slug. The [Codex execution binding](../../skills/poteto-mode/references/codex-execution.md#roles-models-and-effort) omits overrides only when that preserves the parent selection; otherwise it passes the observed parent settings. If those settings or effective inheritance cannot be established, the alias is reported as unresolved. For a panel role the value is an ordered list of objects, each with a `model`, optional `reasoningEffort`, and optional `executor`. Omitted `executor` retains the native Codex path; `claude-code` selects the external CLI. One worker runs per entry, so the list length sets the panel size; repeated model IDs remain separate seats. Setup also configures `swarm workers`, the default model for every `$pstack-for-codex:swarm` worker unless a race names a model for each arm.
 
-## Accept the verification offer, or don't
+## Accept the verification offers, or don't
 
 At the end of setup, `$pstack-for-codex:setup-pstack` looks for a way to prove app behavior in your project, either a `verify-*` skill or an existing harness. If it finds neither, it offers once to generate one with [`$pstack-for-codex:create-verification-skill`](../../skills/create-verification-skill/SKILL.md).
 
 Say yes and it writes `.agents/skills/verify-<app>/`, a project-local skill that teaches agents to drive your app the way a user does. It proves the skill works once before handing it over. Say no and setup moves on. You can run `$pstack-for-codex:create-verification-skill` yourself any time. [Verify and ship](./06-verify-and-ship.md#create-a-project-verification-skill) covers it in depth.
 
 If you're new to pstack, say yes. An agent that can check its own work keeps going until the check passes. An agent that can't hands every result back to you to check by hand. Of everything in this guide, the verification skill pays off the most.
+
+Then setup offers once to generate a formal verification skill with [`$pstack-for-codex:create-formal-verification-skill`](../../skills/create-formal-verification-skill/SKILL.md), unless the project already has one. Tests check the cases someone thought to write. A formal verification skill checks one key property of your code, such as "a job never runs twice at once", in every case within a stated scope. Say yes when your code has concurrency, retries, a state machine, or a parser, where a bug is costly and tests rarely reach the case that breaks. Otherwise say no, and run it later if that changes. [Verify and ship](./06-verify-and-ship.md#prove-a-property-with-a-formal-verification-skill) covers it.
 
 Setup also registers pstack's two custom agent roles under `$CODEX_HOME/agents/`, or `~/.codex/agents/` by default. After setup, start a new Codex chat so it discovers the registered agents and generated project skills. A successful file write alone does not prove discovery.
 

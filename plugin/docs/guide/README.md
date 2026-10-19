@@ -9,7 +9,7 @@ Here's what you'll learn:
 3. [Understand the code](./03-understand.md). A read-only investigation, then `$pstack-for-codex:how`, `$pstack-for-codex:why`, `$pstack-for-codex:teach`, and `$pstack-for-codex:recall` before you edit anything.
 4. [Design the change](./04-design.md). `$pstack-for-codex:architect`, `$pstack-for-codex:arena`, `$pstack-for-codex:swarm`, `$pstack-for-codex:interrogate`, prototypes, and plans before code locks in a shape.
 5. [Build and clean the change](./05-build-and-clean.md). The build playbooks, `$pstack-for-codex:tdd`, `$pstack-for-codex:unslop`, and `$pstack-for-codex:no-comments`.
-6. [Verify and ship](./06-verify-and-ship.md). Prove behavior on the real app, vet numbers with `$pstack-for-codex:benchmark-checklist`, then open a focused PR and drive it to merged.
+6. [Verify and ship](./06-verify-and-ship.md). Prove behavior on the real app, formally verify what tests rarely reach, vet numbers with `$pstack-for-codex:benchmark-checklist`, then open a focused PR and drive it to merged.
 7. [Run work while you sleep](./07-overnight.md). Trust before loops, an overnight contract, a decision log you can audit, and Projects and automations that scale past one agent.
 8. [Steer with principle names](./08-principles.md). The 24 names that redirect an agent mid-task.
 9. [Make it yours](./09-make-it-yours.md). Your own mode, `$pstack-for-codex:correct` for repeated mistakes, and how to test a skill change.

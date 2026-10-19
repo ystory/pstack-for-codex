@@ -34,6 +34,7 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 ## Review and ship
 
 - `$pstack-for-codex:interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Read the dismissals too.
+- `$pstack-for-codex:create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` After merges or refactors in that code: `$pstack-for-codex:maintain-formal-verification-skill`.
 - `$pstack-for-codex:swarm check every package under <dir> against its check script. one worker per package. one report.`
 - `$pstack-for-codex:poteto-mode open the pr. small ordered commits, evidence in the description.`
 - `$pstack-for-codex:poteto-mode babysit this pr. get it green.` For status only: `$pstack-for-codex:poteto-mode check on pr <number>. anything outstanding?`
@@ -43,6 +44,7 @@ Swap in the real paths, skills, and done checks. Informal wording works.
 
 - `$pstack-for-codex:poteto-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. use the Codex event-watch and heartbeat binding until done. if you're truly stuck after a few hours, stop and write up why.`
 - `$pstack-for-codex:show-me-your-work catch me up on what you did last night.` Read its Attention section first.
+- `$pstack-for-codex:ketchup` catches you up on this chat since your last message and lists every call that waits on you.
 - `$pstack-for-codex:poteto-mode full autopilot on this queue. each item is independent.`
 - `$pstack-for-codex:poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
 - `$pstack-for-codex:reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.

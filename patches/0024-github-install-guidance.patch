@@ -1,5 +1,5 @@
 diff --git a/README.md b/README.md
-index b10cfe0..5393fbb 100644
+index ff54e98..251b78c 100644
 --- a/README.md
 +++ b/README.md
 @@ -18,13 +18,15 @@ fork it. improve it. make it yours. PRs are welcome!
@@ -21,7 +21,7 @@ index b10cfe0..5393fbb 100644
  
  Before restoring an older all-Sol bundle, use the current setup to explicitly save Codex-only role choices. Preferences with a Claude executor use schema 2; older helpers reject that format and leave the file intact. Native-only preferences use schema 1, which those older bundles can read.
 diff --git a/docs/guide/01-setup.md b/docs/guide/01-setup.md
-index 17eb422..81f060c 100644
+index 455556d..7391502 100644
 --- a/docs/guide/01-setup.md
 +++ b/docs/guide/01-setup.md
 @@ -4,13 +4,15 @@ In this page you install the plugin, pick which models pstack uses, and run your
@@ -41,4 +41,4 @@ index 17eb422..81f060c 100644
 +
  Start a new Codex chat in your project and select `$pstack-for-codex:setup-pstack`. Installing the plugin and running setup are separate steps.
  
- ## Pick your models
+ Original pstack also installs in Claude Code with `/plugin marketplace add cursor/plugins`, then `/plugin install pstack@cursor-plugins`. Its [Claude Code adapter](../harness/claude-code.md) covers that setup and its `pstack:` command prefix. This distribution uses the [Claude CLI bridge](../../skills/poteto-mode/references/codex-execution.md) from a Codex parent.

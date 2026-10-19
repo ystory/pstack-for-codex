@@ -14,14 +14,14 @@ index 0695ece..1f76091 100644
  	"logo": "assets/logo.png",
  	"keywords": [
 diff --git a/README.md b/README.md
-index f4d0bb3..6d9e624 100644
+index 789a5a1..ff54e98 100644
 --- a/README.md
 +++ b/README.md
 @@ -2,6 +2,8 @@
  
  This distribution adapts Lauren Tan's pstack workflows to Codex. Install through a Codex plugin marketplace and run its setup onboarding. Sol 6.1 runs ordinary roles through Codex; Opus 5.5 runs the hardest tasks through an existing Claude Code CLI. Candidate and reviewer lists and the cross-judge pool use both models, preserving the original requirements for different models or model families.
  
-+The following overview is adapted from [Lauren Tan's original pstack README](https://github.com/cursor/plugins/blob/182f2ce414e83224915c190d2f63239c1608d0a5/pstack/README.md). Commands and skill namespaces have been updated for Codex.
++The following overview is adapted from [Lauren Tan's original pstack README](https://github.com/cursor/plugins/blob/d457567332aa6989e753ea289f30ea2bfbc80bc0/pstack/README.md). Commands and skill namespaces have been updated for Codex.
 +
  i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.
  

@@ -18,7 +18,15 @@ Mechanics first, history second. Each skill's report tells you which sources it 
 $pstack-for-codex:poteto-mode read this thread. restate the underlying issue in your own words, in plain english. don't change any code yet.
 ```
 
-A misreading shows up in the restatement, where it costs one message to correct. Keep your own theory to yourself until the agent has stated its own.
+A misreading shows up in the restatement, where it costs one message to correct. Keep your own theory to yourself until the agent has stated its own. `$pstack-for-codex:in-your-own-words` asks for the restatement alone, with no playbook.
+
+## Aim a task before it starts
+
+```text
+$pstack-for-codex:sharpen write the onboarding doc for the new billing service.
+```
+
+The agent asks how an expert would do the task, what you're really after, and whether the ask says too much or too little. It keeps one outside check that the result is right, then does the work.
 
 ## Prototype before you pick
 
@@ -42,7 +50,7 @@ Ask only after the design settles. The plan is the deliverable, and it names the
 ask $pstack-for-codex:arena for a second opinion on this thread and our approach
 ```
 
-Your current design becomes one candidate among several, and the synthesis tells you whether the panel found something better or confirmed what you had. Cheap insurance before a costly commitment.
+Your current design becomes one candidate among several, and the synthesis tells you whether the panel found something better or confirmed what you had. It costs little next to a design that is expensive to reverse.
 
 ## Check independent slices in parallel
 
@@ -75,6 +83,14 @@ $pstack-for-codex:poteto-mode repro this with $verify-<app>. if it repros on mai
 ```
 
 "if it repros on main" lets the run stop early when the bug is already gone. The video lets you check the fix before you read the diff.
+
+## Prove a property tests rarely reach
+
+```text
+$pstack-for-codex:create-formal-verification-skill the retry queue. a message must never be delivered twice.
+```
+
+You get one property checked in every case within a stated scope, a counterexample in your code's terms if the code already breaks it, and a project skill the next agent runs on any change to that code.
 
 ## Vet a number before you post it
 
@@ -134,6 +150,14 @@ $pstack-for-codex:bro
 
 That's the whole prompt. [`$pstack-for-codex:bro`](../../skills/bro/SKILL.md) restates the last message like one human talking to another, no jargon, shorter. Use it when a reply is technically thorough and you still don't know what it said.
 
+## Catch up on a chat you left running
+
+```text
+$pstack-for-codex:ketchup
+```
+
+[`$pstack-for-codex:ketchup`](../../skills/ketchup/SKILL.md) tells you in plain words what changed since your last message, then lists each call waiting on you with its pick, evidence, and risk. It changes nothing while it reports.
+
 ## The pitfalls
 
 - **Enumerating skills in the prompt.** "use $pstack-for-codex:how then $pstack-for-codex:architect then $pstack-for-codex:arena" reorders steps the playbook already sequences. State the goal and constraints. Name a skill only to override a default.
@@ -141,7 +165,7 @@ That's the whole prompt. [`$pstack-for-codex:bro`](../../skills/bro/SKILL.md) re
 - **Leading with your theory of the cause.** The agent searches wherever you pointed. Ask it to restate the problem first, then share your hunch.
 - **Taking the first design.** One attempt locks in the first shape the model thought of. Ask for prototypes or `$pstack-for-codex:architect` and pick from evidence.
 - **Polishing an abstract plan.** Adversarial review of a plan with no code behind it invents risks that will never happen. Settle the open questions with prototypes, then review what got built.
-- **Parallel agents in one worktree.** They overwrite each other and the diff becomes archaeology. Say "own worktree per attempt" and allocate separate ports and build outputs for concurrent runs on the same host.
+- **Parallel agents in one worktree.** They overwrite each other, and nobody can tell which agent changed what. Say "own worktree per attempt" and allocate separate ports and build outputs for concurrent runs on the same host.
 - **Looping before you trust the loop.** A loop that can't verify its own work only makes unchecked work faster. Get the verification skill working first.
 - **Trusting an unvetted number.** A warm cache or a skipped code path can fake a speedup. Run `$pstack-for-codex:benchmark-checklist` before the number goes anywhere.
 - **Correcting the same mistake by hand.** A correction in chat helps one run. `$pstack-for-codex:correct` fixes the repo so no later run repeats it.

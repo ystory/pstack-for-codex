@@ -1,8 +1,8 @@
 diff --git a/skills/setup-pstack/SKILL.md b/skills/setup-pstack/SKILL.md
-index c9d5f32..71b8d52 100644
+index c7c7acb..efdf883 100644
 --- a/skills/setup-pstack/SKILL.md
 +++ b/skills/setup-pstack/SKILL.md
-@@ -1,83 +1,79 @@
+@@ -1,87 +1,83 @@
  ---
  name: setup-pstack
 -description: Register pstack's bundled Codex agents and configure which models pstack uses per role and at what reasoning budget. Detects your available models and writes an always-applied rule that overrides the skill defaults. Use for /setup-pstack, "configure pstack models", "pstack budget", or changing pstack's model choices.
@@ -127,6 +127,11 @@ index c9d5f32..71b8d52 100644
  
 -Check whether the project has a way to drive the real app for proof (a `verify-*` skill, or an existing harness). If not, offer once: "want a project-local verification skill, so agents can drive the app the way a user does and prove changes work? I can generate one with /create-verification-skill." On yes, invoke `/create-verification-skill` (resolves wherever pstack is installed: workspace, user, or plugin). On no, move on without pushing.
 +Check whether the project has a way to drive the real app for proof, such as a `verify-*` skill or existing harness. If it does not, offer once: "want a project-local verification skill, so agents can drive the app the way a user does and prove changes work? I can generate one with $create-verification-skill." On yes, resolve the installed `create-verification-skill/SKILL.md` to an absolute path and follow it. On no, move on without pushing.
+ 
+ ### 8. Offer a formal verification skill (optional)
+ 
+-Check whether the project already has a formal verification skill (a project skill that runs a model checker, a proof, or another verifier against the code). If not, offer once: "want a formal verification skill, so agents can prove a key property of your code holds in every case in scope, not only the cases tests reach? I can generate one with /create-formal-verification-skill." On yes, invoke `/create-formal-verification-skill` (resolves wherever pstack is installed: workspace, user, or plugin). On no, move on without pushing.
++Check whether the project already has a formal verification skill (a project skill that runs a model checker, a proof, or another verifier against the code). If not, offer once: "want a formal verification skill, so agents can prove a key property of your code holds in every case in scope, not only the cases tests reach? I can generate one with $create-formal-verification-skill." On yes, resolve the installed `create-formal-verification-skill/SKILL.md` to an absolute path and follow it. On no, move on without pushing.
 diff --git a/skills/setup-pstack/references/models-contract.md b/skills/setup-pstack/references/models-contract.md
 new file mode 100644
 index 0000000..a79d198

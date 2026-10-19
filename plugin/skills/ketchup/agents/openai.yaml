@@ -1,5 +1,5 @@
 interface:
   display_name: "ketchup"
-  short_description: "Catch the user up on what changed in this chat since their last message, in a few plain sentences and small visuals. Give each action item just enough context to make the call. Use for /ketchup."
+  short_description: "Catch the user up on what changed in this chat since their last message, in plain words and small visuals. List every item waiting on them with what they need to decide it from the reply alone. Use for /ketchup."
 policy:
   allow_implicit_invocation: false

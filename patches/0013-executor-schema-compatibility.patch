@@ -1,5 +1,5 @@
 diff --git a/README.md b/README.md
-index 9742e22..528f616 100644
+index bf56196..82d3a3d 100644
 --- a/README.md
 +++ b/README.md
 @@ -25,6 +25,8 @@ codex plugin add pstack-for-codex@pstack-for-codex-local
@@ -12,10 +12,10 @@ index 9742e22..528f616 100644
  
  ## get started
 diff --git a/docs/guide/01-setup.md b/docs/guide/01-setup.md
-index d973783..42ed5a7 100644
+index efda4ed..4d09129 100644
 --- a/docs/guide/01-setup.md
 +++ b/docs/guide/01-setup.md
-@@ -31,6 +31,8 @@ The defaults run at `xhigh` reasoning, the same as the `large` budget. `unlimite
+@@ -33,6 +33,8 @@ The defaults run at `xhigh` reasoning, the same as the `large` budget. `unlimite
  
  You only override what you care about. A role absent from `roles` keeps the skill's default. To restore a default, remove that role's entry. A rerun of `$pstack-for-codex:setup-pstack` keeps your existing choices. Saved choices stay separate from plugin updates; when a default changes, a saved old choice stays pinned until you remove or change it. For an existing all-Sol configuration, setup shows the proposed mixed defaults separately and asks before saving any change.
  
@@ -23,9 +23,9 @@ index d973783..42ed5a7 100644
 +
  You might be wondering what happens if you use Auto. Set a role to `inherit-parent` or `auto` to select your current parent chat's model and reasoning settings. Both values mean the same thing, and neither is a model slug. The [Codex execution binding](../../skills/poteto-mode/references/codex-execution.md#roles-models-and-effort) omits overrides only when that preserves the parent selection; otherwise it passes the observed parent settings. If those settings or effective inheritance cannot be established, the alias is reported as unresolved. For a panel role the value is an ordered list of objects, each with a `model`, optional `reasoningEffort`, and optional `executor`. Omitted `executor` retains the native Codex path; `claude-code` selects the external CLI. One worker runs per entry, so the list length sets the panel size; repeated model IDs remain separate seats. Setup also configures `swarm workers`, the default model for every `$pstack-for-codex:swarm` worker unless a race names a model for each arm.
  
- ## Accept the verification offer, or don't
+ ## Accept the verification offers, or don't
 diff --git a/skills/setup-pstack/SKILL.md b/skills/setup-pstack/SKILL.md
-index 08c23e7..fbdd183 100644
+index 0b4121f..efe56d3 100644
 --- a/skills/setup-pstack/SKILL.md
 +++ b/skills/setup-pstack/SKILL.md
 @@ -29,7 +29,9 @@ Run the sibling `poteto-mode/scripts/run-claude.mjs detect` with Node.js from it

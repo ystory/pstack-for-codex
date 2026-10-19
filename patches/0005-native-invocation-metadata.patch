@@ -1,5 +1,5 @@
 diff --git a/.cursor-plugin/plugin.json b/.cursor-plugin/plugin.json
-index 9172fd0..0695ece 100644
+index 7754f38..0695ece 100644
 --- a/.cursor-plugin/plugin.json
 +++ b/.cursor-plugin/plugin.json
 @@ -1,7 +1,7 @@
@@ -7,7 +7,7 @@ index 9172fd0..0695ece 100644
 -	"name": "pstack",
 +	"name": "pstack-for-codex",
  	"displayName": "pstack",
--	"version": "0.15.25",
+-	"version": "0.15.28",
 +	"version": "0.1.0-dev.0",
  	"description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
  	"author": {
@@ -89,6 +89,17 @@ index 0000000..372b1b1
 +  short_description: "Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you. Use for /correct."
 +policy:
 +  allow_implicit_invocation: false
+diff --git a/skills/create-formal-verification-skill/agents/openai.yaml b/skills/create-formal-verification-skill/agents/openai.yaml
+new file mode 100644
+index 0000000..ffcddd9
+--- /dev/null
++++ b/skills/create-formal-verification-skill/agents/openai.yaml
+@@ -0,0 +1,5 @@
++interface:
++  display_name: "create-formal-verification-skill"
++  short_description: "Generate a project-local skill that formally verifies the code where a bug costs the most and tests reach the least, in any language, with whichever verification tool fits. Use for /create-formal-verification-skill, \"model-check this race\", \"prove this invariant\", or when concurrency, retries, state machines, parsers, or unsafe code need more than tests."
++policy:
++  allow_implicit_invocation: false
 diff --git a/skills/create-verification-skill/agents/openai.yaml b/skills/create-verification-skill/agents/openai.yaml
 new file mode 100644
 index 0000000..c861646
@@ -146,13 +157,24 @@ index 0000000..0edb75b
 +  allow_implicit_invocation: false
 diff --git a/skills/ketchup/agents/openai.yaml b/skills/ketchup/agents/openai.yaml
 new file mode 100644
-index 0000000..ee6193a
+index 0000000..b2e3cde
 --- /dev/null
 +++ b/skills/ketchup/agents/openai.yaml
 @@ -0,0 +1,5 @@
 +interface:
 +  display_name: "ketchup"
-+  short_description: "Catch the user up on what changed in this chat since their last message, in a few plain sentences and small visuals. Give each action item just enough context to make the call. Use for /ketchup."
++  short_description: "Catch the user up on what changed in this chat since their last message, in plain words and small visuals. List every item waiting on them with what they need to decide it from the reply alone. Use for /ketchup."
++policy:
++  allow_implicit_invocation: false
+diff --git a/skills/maintain-formal-verification-skill/agents/openai.yaml b/skills/maintain-formal-verification-skill/agents/openai.yaml
+new file mode 100644
+index 0000000..d5b517b
+--- /dev/null
++++ b/skills/maintain-formal-verification-skill/agents/openai.yaml
+@@ -0,0 +1,5 @@
++interface:
++  display_name: "maintain-formal-verification-skill"
++  short_description: "Bring a project's formal verification back in line with the code after the code changes: find the commits that touched verified code, update the model, harness, or properties to describe the code as it is now, rerun, and say whether each failure is drift in the verification or a bug in the code. Use for /maintain-formal-verification-skill, \"is the model still true to the code\", or after merges and refactors that touched verified code without rechecking it."
 +policy:
 +  allow_implicit_invocation: false
 diff --git a/skills/maintain-verification-skill/agents/openai.yaml b/skills/maintain-verification-skill/agents/openai.yaml

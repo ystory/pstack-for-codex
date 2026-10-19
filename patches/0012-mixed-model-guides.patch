@@ -1,5 +1,5 @@
 diff --git a/README.md b/README.md
-index 82b9f8e..9742e22 100644
+index 034138e..bf56196 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,6 +1,6 @@
@@ -23,16 +23,16 @@ index 82b9f8e..9742e22 100644
  
  new here? the [pstack guide](./docs/guide/README.md) walks you through a first real task, from setup and prompting through verification and overnight runs. stuck, or unsure which skill fits? ask [`$pstack-for-codex:poteto-help`](./skills/poteto-help/SKILL.md).
  
--that's it. the other skills are situational; the mode skill uses them for you as needed. out of the box, every role defaults to sol 6.1. the default panel is sol 6.1 / sol 6.1. [`$pstack-for-codex:setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
-+that's it. the other skills are situational; the mode skill uses them for you as needed. out of the box, ordinary roles use sol 6.1 and the hardest tasks use opus 5.5. the default panel is sol 6.1 / opus 5.5. [`$pstack-for-codex:setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
+-that's it. the other skills are situational, and the mode skill uses them for you as needed. out of the box, every role defaults to sol 6.1. the default panel is sol 6.1 / sol 6.1. [`$pstack-for-codex:setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
++that's it. the other skills are situational, and the mode skill uses them for you as needed. out of the box, ordinary roles use sol 6.1 and the hardest tasks use opus 5.5. the default panel is sol 6.1 / opus 5.5. [`$pstack-for-codex:setup-pstack`](./skills/setup-pstack/SKILL.md) changes any of it.
  
  ## usage
  
 diff --git a/docs/guide/01-setup.md b/docs/guide/01-setup.md
-index 98cfcb6..d973783 100644
+index 510aa7a..efda4ed 100644
 --- a/docs/guide/01-setup.md
 +++ b/docs/guide/01-setup.md
-@@ -23,11 +23,15 @@ $pstack-for-codex:setup-pstack
+@@ -25,11 +25,15 @@ $pstack-for-codex:setup-pstack
  
  [`$pstack-for-codex:setup-pstack`](../../skills/setup-pstack/SKILL.md) detects the models you have access to, asks for a reasoning budget, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `$CODEX_HOME/pstack-for-codex/models.json`, or `~/.codex/pstack-for-codex/models.json` when `CODEX_HOME` is unset. Every pstack skill resolves its model roles from this user-owned configuration.
  
@@ -49,5 +49,5 @@ index 98cfcb6..d973783 100644
 +
 +You might be wondering what happens if you use Auto. Set a role to `inherit-parent` or `auto` to select your current parent chat's model and reasoning settings. Both values mean the same thing, and neither is a model slug. The [Codex execution binding](../../skills/poteto-mode/references/codex-execution.md#roles-models-and-effort) omits overrides only when that preserves the parent selection; otherwise it passes the observed parent settings. If those settings or effective inheritance cannot be established, the alias is reported as unresolved. For a panel role the value is an ordered list of objects, each with a `model`, optional `reasoningEffort`, and optional `executor`. Omitted `executor` retains the native Codex path; `claude-code` selects the external CLI. One worker runs per entry, so the list length sets the panel size; repeated model IDs remain separate seats. Setup also configures `swarm workers`, the default model for every `$pstack-for-codex:swarm` worker unless a race names a model for each arm.
  
- ## Accept the verification offer, or don't
+ ## Accept the verification offers, or don't
  
